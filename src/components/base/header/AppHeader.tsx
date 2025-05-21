@@ -13,9 +13,11 @@ type FormValues = {
 
 
 const AppHeader = () => {
-
-  const setUrl = usePlayerStore((state) => state.setUrl)
+  const socket = useSocketStore((state) => state.socket)
   const clientsConnected = useSocketStore((state) => state.clientsConnected)
+  const setUrl = usePlayerStore((state) => state.setUrl)
+  const setIsPlaying = usePlayerStore((state) => state.setIsPlaying)
+
   const {control, handleSubmit, reset} = useForm({
     defaultValues: {
       url: ''
@@ -24,6 +26,8 @@ const AppHeader = () => {
 
   const onSubmit: SubmitHandler<FormValues> = ({ url }) => { 
     setUrl(url)
+    setIsPlaying(true)
+    socket?.emit('add-new-video', { url })
     reset()
   }
 
