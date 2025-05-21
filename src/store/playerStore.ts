@@ -2,11 +2,15 @@ import { create } from 'zustand'
 
 
 interface IPlayerStore {
-  url: string;
-  setUrl: (url: string) => void
+  videoUrl: string;
+  isPlaying: boolean;
+  setUrl: (url: string) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
 }
 
 export const usePlayerStore = create<IPlayerStore>((set) => ({
-  url: '',
-  setUrl: (url) => set({ url })
+  videoUrl: '',
+  isPlaying: false,
+  setUrl: (videoUrl) => set({ videoUrl }),
+  setIsPlaying: (isPlaying) => set({ isPlaying }),
 }))
