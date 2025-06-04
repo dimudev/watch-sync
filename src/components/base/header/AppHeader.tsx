@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { usePlayerStore } from '@/store/playerStore'
 import { useSocketStore } from '@/store/socketStore'
-import { Eye, TvMinimal } from 'lucide-react'
+import {  TvMinimal, Users } from 'lucide-react'
 import React from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
@@ -32,13 +32,13 @@ const AppHeader = () => {
   }
 
   return (
-    <header className='w-full h-[70px] flex items-center justify-between bg-slate-900 text-white'>
-      <div className='w-[20%]  flex items-center justify-center md:gap-4'>
+    <header className='w-full h-full text-sm sm:text-base md:text-lg flex flex-col sm:flex-row items-center justify-evenly sm:justify-between sm:px-4 bg-slate-900  text-white'>
+      <div className='flex items-center gap-2'>
         <TvMinimal className='w-6 h-6 md:w-8 md:h-8 ' />
-        <span className='hidden lg:inline lg:text-lg lg:font-bold'>Watch Sync</span>
+        <span className=' text-xl md:text-xl font-bold '>Watch Sync</span>
       </div>
-      <div className=' w-[80%] flex items-center gap-2'>
-        <form className='w-full flex items-center gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <div className='w-[60%]'>
+        <form className='flex  gap-2' onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name='url'
             defaultValue=''
@@ -47,15 +47,20 @@ const AppHeader = () => {
               required: true
             }}
             render={({ field: {value, onChange} }) => (
-              <Input placeholder='Search' className='h-[30px] md:h-[40px]' size={22} value={value} onChange={onChange} />
+              <Input 
+                placeholder='Paste video URL here...' 
+                size={22} 
+                value={value} 
+                onChange={onChange}
+              />
             )}
           />
-          <Button type='submit' variant='secondary' className='h-[30px] md:h-[40px]' >Add</Button>
+          <Button type='submit' variant='secondary' className='' >Add</Button>
         </form>
       </div>
-      <div className='w-[20%] flex items-center justify-center gap-2'>
-        <Eye className='w-4 h-4 md:w-7 md:h-7 text-emerald-700' /> 
-        <span className='text-sm md:text-base'>{clientsConnected}</span>
+      <div className='flex gap-2 items-center'>
+        <Users className='w-4 h-4 md:w-7 md:h-7 text-emerald-700' /> 
+        <span className=''>{clientsConnected} watching</span>
       </div>
     </header>
   )

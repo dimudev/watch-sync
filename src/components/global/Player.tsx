@@ -127,19 +127,18 @@ const Player = () => {
   }, [isPlaying, setIsPlaying, setVideoUrl, socket, videoUrl])
   
   return (
-    <div className='bg-red-500 w-full h-[400px]'>
-      <h1>isPlaying: {isPlaying ? 'true' : 'false'}</h1>
-      <YouTubePlayer
-        ref={playerRef}
-        url={videoUrl}
-        playing={isPlaying}
-        controls
-        onPause={handlePauseVideo}
-        onPlay={handlePlayVideo}
-        onProgress={handleProgress}
-        onReady={handleReady}
-      />
-    </div>
+    <YouTubePlayer
+      ref={playerRef}
+      url={videoUrl}
+      playing={isPlaying}
+      controls
+      onPause={handlePauseVideo}
+      onPlay={handlePlayVideo}
+      onProgress={handleProgress}
+      onReady={handleReady}
+      width={'100%'}
+      height={'100%'}
+    />
   )
 }
 
