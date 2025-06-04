@@ -1,12 +1,17 @@
 'use client'
 import AppHeader from '@/components/base/header/AppHeader'
+import ModalName from '@/components/global/ModalName'
 import Player from '@/components/global/Player'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useUserStore } from '@/store/userStore'
 import React from 'react'
 
 
 
 const Home = () => {
+
+  const userName = useUserStore((state) => state.name)
+
   return (
     <div className=' h-dvh grid grid-rows-10 gap-2 bg-slate-800'>
       <div className='0 row-span-2 sm:row-span-1 sticky top-0'>
@@ -17,7 +22,8 @@ const Home = () => {
           <Player />
         </main>
         <aside className=' hidden row-span-2 sm:row-span-1 md:inline md:col-span-3 md:row-span-10 '>
-
+          <ModalName />
+          {userName}
         </aside>
         <footer className=' row-span-4 p-4 md:hidden'>
           <Tabs defaultValue="account" className="w-full bg-green-200">
