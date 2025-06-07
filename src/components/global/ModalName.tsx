@@ -16,11 +16,11 @@ import { Label } from '../ui/label'
 import { useUserStore } from '@/store/userStore'
 
 const ModalName = () => {
-  const [userName, setUserName] = useState('')
-  const setName = useUserStore((state) => state.setName)
+  const [name, setName] = useState('')
+  const setUserName = useUserStore((state) => state.setUserName)
 
   const captureNameHandler = (event: ChangeEvent<HTMLInputElement>) => { 
-    setUserName(event.target.value)
+    setName(event.target.value)
   }
 
   const createRandomName = () => { 
@@ -30,7 +30,7 @@ const ModalName = () => {
       length: 2,
     })
 
-    setName(randomName)
+    setUserName(randomName)
   }
 
   return (
@@ -53,7 +53,7 @@ const ModalName = () => {
             <Input
               id="Name"
               placeholder="Enter your name"
-              value={userName}
+              value={name}
               onChange={captureNameHandler}
             />
           </div>
@@ -61,8 +61,8 @@ const ModalName = () => {
         <DialogFooter className="sm:justify-start">
           <DialogClose asChild>
             {
-              userName ? (
-                <Button type="button" variant="secondary" onClick={() => setName(userName)}>
+              name ? (
+                <Button type="button" variant="secondary" onClick={() => setUserName(name)}>
               Join the Party
                 </Button>
               ) : (
