@@ -1,5 +1,6 @@
 'use client'
 import AppHeader from '@/components/base/header/AppHeader'
+import Chat from '@/components/global/chat/Chat'
 import ModalName from '@/components/global/ModalName'
 import Player from '@/components/global/Player'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -9,8 +10,7 @@ import React from 'react'
 
 
 const Home = () => {
-
-  const userName = useUserStore((state) => state.name)
+  const userName = useUserStore((state) => state.userName)
 
   return (
     <div className=' h-dvh grid grid-rows-10 gap-2 bg-slate-800'>
@@ -21,9 +21,14 @@ const Home = () => {
         <main className=' row-span-4 sm:row-span-5 md:col-span-7 md:row-span-8 p-4'>
           <Player />
         </main>
-        <aside className=' hidden row-span-2 sm:row-span-1 md:inline md:col-span-3 md:row-span-10 '>
-          <ModalName />
-          {userName}
+        <aside className='hidden row-span-2 sm:row-span-1 md:grid md:grid-rows-10 md:col-span-3 md:row-span-10 md:gap-4 md:p-4'>
+          <section className='row-span-6 w-full'>
+            <Chat />
+          </section>
+          <section className='bg-green-200 row-span-6 w-full'>
+            {userName}
+            <ModalName />
+          </section>
         </aside>
         <footer className=' row-span-4 p-4 md:hidden'>
           <Tabs defaultValue="account" className="w-full bg-green-200">
