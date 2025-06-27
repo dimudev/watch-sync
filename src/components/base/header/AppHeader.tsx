@@ -1,7 +1,6 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { usePlayerStore } from '@/store/playerStore'
 import { useSocketStore } from '@/store/socketStore'
 import {  TvMinimal, Users } from 'lucide-react'
 import React from 'react'
@@ -15,8 +14,6 @@ type FormValues = {
 const AppHeader = () => {
   const socket = useSocketStore((state) => state.socket)
   const clientsConnected = useSocketStore((state) => state.clientsConnected)
-  const setUrl = usePlayerStore((state) => state.setUrl)
-  const setIsPlaying = usePlayerStore((state) => state.setIsPlaying)
 
   const {control, handleSubmit, reset} = useForm({
     defaultValues: {
@@ -25,8 +22,6 @@ const AppHeader = () => {
   })
 
   const onSubmit: SubmitHandler<FormValues> = ({ url }) => { 
-    setUrl(url)
-    setIsPlaying(true)
     socket?.emit('add-new-video', { url })
     reset()
   }

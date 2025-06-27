@@ -1,16 +1,20 @@
 import { create } from 'zustand'
 
+type IVideo = {
+  id: string;
+  url: string;
+}
 
 interface IPlayerStore {
-  videoUrl: string;
+  currentVideo: IVideo | null;
   isPlaying: boolean;
-  setUrl: (url: string) => void;
+  setCurrentVideo: (video: IVideo | null ) => void; 
   setIsPlaying: (isPlaying: boolean) => void;
 }
 
 export const usePlayerStore = create<IPlayerStore>((set) => ({
-  videoUrl: '',
+  currentVideo: null,
   isPlaying: false,
-  setUrl: (videoUrl) => set({ videoUrl }),
+  setCurrentVideo: (video) => set({ currentVideo: video }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
 }))

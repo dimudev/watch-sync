@@ -8,7 +8,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
+  // DialogTrigger
 } from '@/components/ui/dialog'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -35,9 +35,9 @@ const ModalName = () => {
 
   return (
     <Dialog defaultOpen >
-      <DialogTrigger asChild>
+      {/* <DialogTrigger asChild>
         <Button variant="outline">Share</Button>
-      </DialogTrigger>
+      </DialogTrigger> */}
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Welcome to the Watch Party!</DialogTitle>

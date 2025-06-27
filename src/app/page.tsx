@@ -3,14 +3,11 @@ import AppHeader from '@/components/base/header/AppHeader'
 import Chat from '@/components/global/chat/Chat'
 import ModalName from '@/components/global/ModalName'
 import Player from '@/components/global/Player'
+import VideoQueue from '@/components/global/queue/VideoQueue'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useUserStore } from '@/store/userStore'
 import React from 'react'
 
-
-
 const Home = () => {
-  const userName = useUserStore((state) => state.userName)
 
   return (
     <div className=' h-dvh grid grid-rows-10 gap-2 bg-slate-800'>
@@ -25,9 +22,8 @@ const Home = () => {
           <section className='row-span-6 w-full'>
             <Chat />
           </section>
-          <section className='bg-green-200 row-span-6 w-full'>
-            {userName}
-            <ModalName />
+          <section className=' row-span-6 w-full'>
+            <VideoQueue />
           </section>
         </aside>
         <footer className=' row-span-4 p-4 md:hidden'>
@@ -45,6 +41,7 @@ const Home = () => {
           </Tabs>
         </footer>
       </div>
+      <ModalName />
     </div>
   )
 }
