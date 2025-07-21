@@ -3,7 +3,7 @@ import { useSocketStore } from '@/store/socketStore'
 import { useEffect, useRef } from 'react'
 import io, { Socket } from 'socket.io-client'
 
-export const useSocket = (url = 'http://localhost:8080') => {
+export const useSocket = (url = 'https://watchs-sync-backend.onrender.com/') => {
   const socketRef = useRef<Socket | null>(null)
   const setSocket = useSocketStore((state) => state.setSocket)
   const setOnline = useSocketStore((state) => state.setOnline)
