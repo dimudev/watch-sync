@@ -1,21 +1,27 @@
+// store/queueStore.ts
 import { create } from 'zustand';
 
-
-export type IQueueData = {
+interface Video {
   id: string;
   url: string;
+  title: string;
+  thumbnail: string;
+  channelTitle: string;
 }
 
+interface QueueState {
+  queue: Video[];
+  setQueue: (videos: Video[]) => void;
+  addToQueue: (video: Video) => void;
+  removeFromQueue: (videoId: string) => void;
+}
 
-interface IQueueStore {
-  queue: Array<IQueueData>;
-  setQueue: (videos: Array<IQueueData>) => void;
-  addVideo: (video: IQueueData) => void
-
-} 
-
-export const useQueueStore = create<IQueueStore>((set) => ({
+export const useQueueStore = create<QueueState>((set) => ({
   queue: [],
   setQueue: (videos) => set({ queue: videos }),
-  addVideo: (video) => set((state) => ({ queue: [...state.queue, video] }))
-}))
+  addToQueue: (video) => set((state) => ({ queue: [...state.queue, video] })),
+  removeFromQueue: (videoId) =>
+    set((state) => ({
+      queue: state.queue.filter((video) => video.id !== videoId),
+    })),
+}));

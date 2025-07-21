@@ -1,5 +1,7 @@
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 import React, { ChangeEvent, useState } from 'react'
+import randomColor from 'randomcolor';
+
 import {
   Dialog,
   DialogClose,
@@ -8,19 +10,29 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  // DialogTrigger
 } from '@/components/ui/dialog'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Label } from '../ui/label'
+import { Button } from '../../ui/button'
+import { Input } from '../../ui/input'
+import { Label } from '../../ui/label'
 import { useUserStore } from '@/store/userStore'
 
 const ModalName = () => {
   const [name, setName] = useState('')
+  const [open, setOpen] = useState(true)
   const setUserName = useUserStore((state) => state.setUserName)
+  const setColorName = useUserStore((state) => state.setColorName)
+  
+
+  const createUserName = () => {
+    const color = randomColor({luminosity: 'dark'})
+    setUserName(name)
+    setColorName(color)
+    setOpen(false)
+  }
 
   const captureNameHandler = (event: ChangeEvent<HTMLInputElement>) => { 
     setName(event.target.value)
+    setOpen(true)
   }
 
   const createRandomName = () => { 
@@ -29,16 +41,16 @@ const ModalName = () => {
       separator: '-',
       length: 2,
     })
+    const color = randomColor({luminosity: 'dark'})
 
     setUserName(randomName)
+    setColorName(color)
+    setOpen(false)
   }
 
   return (
-    <Dialog defaultOpen >
-      {/* <DialogTrigger asChild>
-        <Button variant="outline">Share</Button>
-      </DialogTrigger> */}
-      <DialogContent className="sm:max-w-md">
+    <Dialog defaultOpen  open={open}  >
+      <DialogContent className="sm:max-w-md" showCloseButton={false}>
         <DialogHeader>
           <DialogTitle>Welcome to the Watch Party!</DialogTitle>
           <DialogDescription>
@@ -62,7 +74,7 @@ const ModalName = () => {
           <DialogClose asChild>
             {
               name ? (
-                <Button type="button" variant="secondary" onClick={() => setUserName(name)}>
+                <Button type="button" variant="secondary" onClick={createUserName}>
               Join the Party
                 </Button>
               ) : (

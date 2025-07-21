@@ -1,10 +1,14 @@
 'use client'
+import ModalConfig from '@/components/global/modal/ModalConfig'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useSocketStore } from '@/store/socketStore'
-import {  TvMinimal, Users } from 'lucide-react'
+import {  TvMinimalPlay } from 'lucide-react'
 import React from 'react'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { ModeToggle } from '../mode-toggle/ModeToggle'
+import { isValidYouTubeUrl } from '@/lib/youtube'
+import { toast } from 'sonner'
 
 type FormValues = {
   url: string;
@@ -13,27 +17,39 @@ type FormValues = {
 
 const AppHeader = () => {
   const socket = useSocketStore((state) => state.socket)
-  const clientsConnected = useSocketStore((state) => state.clientsConnected)
-
   const {control, handleSubmit, reset} = useForm({
     defaultValues: {
       url: ''
     }
   })
 
-  const onSubmit: SubmitHandler<FormValues> = ({ url }) => { 
+  const onSubmit: SubmitHandler<FormValues> = ({ url }) => {  
+    if (!isValidYouTubeUrl(url)) {
+      toast.error('Invalid URL', {
+        position: 'bottom-right',
+        richColors: true,
+        closeButton: true
+      })
+      return
+    }
     socket?.emit('add-new-video', { url })
+    toast.success('Video added', {
+      position: 'bottom-right',
+      richColors: true,
+      closeButton: true,
+      icon: '🎉 '
+    })
     reset()
   }
 
   return (
-    <header className='w-full h-full text-sm sm:text-base md:text-lg flex flex-col sm:flex-row items-center justify-evenly sm:justify-between sm:px-4 bg-slate-900  text-white'>
-      <div className='flex items-center gap-2'>
-        <TvMinimal className='w-6 h-6 md:w-8 md:h-8 ' />
-        <span className=' text-xl md:text-xl font-bold '>Watch Sync</span>
+    <>
+      <div className="flex items-center  gap-2 col-span-3 row-span-2 lg:col-span-2 lg:row-span-4">
+        <TvMinimalPlay className="w-6 h-6" />
+        <h1 className='text-xl font-bold' >Watch Sync</h1>
       </div>
-      <div className='w-[60%]'>
-        <form className='flex  gap-2' onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-span-6 row-span-2 col-start-1 row-start-3 lg:col-span-2 lg:row-span-4 lg:col-start-3 ">
+        <form className='w-full h-full flex items-center gap-2 ' onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name='url'
             defaultValue=''
@@ -43,21 +59,22 @@ const AppHeader = () => {
             }}
             render={({ field: {value, onChange} }) => (
               <Input 
-                placeholder='Paste video URL here...' 
+                placeholder='Paste video URL here...'
                 size={22} 
                 value={value} 
                 onChange={onChange}
+                inputMode='url'
               />
             )}
           />
-          <Button type='submit' variant='secondary' className='' >Add</Button>
+          <Button type='submit' variant='default' className='' >Add</Button>
         </form>
       </div>
-      <div className='flex gap-2 items-center'>
-        <Users className='w-4 h-4 md:w-7 md:h-7 text-emerald-700' /> 
-        <span className=''>{clientsConnected} watching</span>
+      <div className="flex items-center justify-end  gap-2 col-span-3 row-span-2 col-start-4 row-start-1 lg:col-span-2 lg:row-span-4 lg:col-start-5">
+        <ModeToggle />
+        <ModalConfig />
       </div>
-    </header>
+    </>
   )
 }
 

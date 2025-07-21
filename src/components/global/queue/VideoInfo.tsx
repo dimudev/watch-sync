@@ -1,70 +1,56 @@
 import { Button } from '@/components/ui/button'
-import { extractYouTubeID } from '@/lib/youtube'
+import { useQueueStore } from '@/store/queueStore'
 import { useSocketStore } from '@/store/socketStore'
-import { Grip, Play, Trash } from 'lucide-react'
-import React, { useEffect, useState } from 'react'
+import { Play, Trash } from 'lucide-react'
+import { toast } from 'sonner'
 
 
 interface Props {
-  videoUrl: string
   videoId: string
 }
 
-interface VideoData {
-  title: string
-  thumbnail: string
-  channelTitle: string
-}
 
-const VideoInfo = ({ videoId, videoUrl }: Props	) => {
-  const [videData, setVideoData] = useState<VideoData | null>(null)
+const VideoInfo = ({ videoId }: Props	) => {
   const socket = useSocketStore((state) => state.socket)
+  const video = useQueueStore((state) =>
+    state.queue.find((v) => v.id === videoId)
+  )
 
+
+  
   const removeVideoFromQueue = () => { 
     socket?.emit('remove-video', { videoId })
+    toast.success('Video removed', { position: 'top-center', richColors: true, closeButton: true })
   }
 
   const playVideoFromQueue = () => { 
     socket?.emit('play-video-from-queue', { videoId })
   }
 
+  if (!video) return null
 
-  useEffect(() => {
-    const fetchData = async() => {
-      try {
-        const videoId = extractYouTubeID(videoUrl)
-        const res = await fetch(
-          `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${process.env.NEXT_PUBLIC_YT_API_KEY}`
-        )
-        const json = await res.json()
-        const snippet = json.items?.[0]?.snippet
-        if (snippet) {
-          setVideoData({
-            title: snippet.title,
-            thumbnail: snippet.thumbnails.default.url,
-            channelTitle: snippet.channelTitle,
-          })
-        }
-      } catch (err) {
-        console.error('Error fetching YouTube data:', err)
-
-      }
-    }
-  
-    fetchData()
-  }, [videoUrl])
-  
-  
   return (
-    <li  className='flex justify-around items-center  border border-gray-600'>
-      <Grip size={16} className="text-zinc-600 cursor-move" />
-      <img src={videData?.thumbnail} alt={videData?.title} height={100} width={100} />
-      <p>{videData?.title}</p>
-      <div className='flex gap-2'>
-        <Button onClick={playVideoFromQueue} size={'icon'} >
+    <li className="w-full max-w-full flex items-center gap-2 rounded  overflow-hidden  p-2 dark:hover:bg-zinc-800">
+      <img
+        src={video?.thumbnail}
+        alt={video?.title}
+        width={65}
+        height={65}
+        className="shrink-0 rounded"
+      />
+      <div className="flex flex-col flex-1 gap-1 w-20 ">
+        <p className="flex-1 truncate text-sm">
+          {video?.title ?? 'Título del video'}
+        </p>
+        <p className='text-sm font-medium'>
+          {video?.channelTitle ?? 'Canal'}
+        </p>
+      </div>
+      <div className="flex gap-2 shrink-0">
+        <Button onClick={playVideoFromQueue} size="icon" className="shrink-0">
           <Play />
         </Button>
-        <Button onClick={removeVideoFromQueue} size={'icon'} variant={'destructive'}>
+        <Button onClick={removeVideoFromQueue} size="icon" variant="destructive" className="shrink-0">
           <Trash />
         </Button>
       </div>
@@ -73,3 +59,6 @@ const VideoInfo = ({ videoId, videoUrl }: Props	) => {
 }
 
 export default VideoInfo
+
+
+
