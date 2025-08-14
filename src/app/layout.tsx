@@ -1,5 +1,5 @@
 import './globals.css';
-import { Analytics } from "@vercel/analytics/next"
+import { Analytics } from '@vercel/analytics/next'
 import { Geist, Geist_Mono } from 'next/font/google';
 import { SocketProvider } from '../context/socket/SocketProvider';
 import { ThemeProvider } from '@/components/provider/theme-provider';
